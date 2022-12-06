@@ -35,7 +35,6 @@ export default class Camera implements CameraInterface {
 		this.canvas = this.portfolio.canvas;
 
 		this.setInstance();
-		this.setControls();
 	}
 
 	setInstance() {
@@ -46,8 +45,7 @@ export default class Camera implements CameraInterface {
 			100000
 		);
 
-		this.instance.position.set(-3186.39, 1159.2, 1643.47);
-		this.instance.quaternion.setFromEuler(new THREE.Euler(-0.46, -1.12, -0.42));
+		this.instance.position.set(0, 5, 25);
 		this.scene.add(this.instance);
 	}
 
@@ -58,10 +56,12 @@ export default class Camera implements CameraInterface {
 
 	resize() {
 		this.instance.aspect = this.sizes.width / this.sizes.height;
+		console.log(this.sizes.width, this.sizes.height);
+
 		this.instance.updateProjectionMatrix();
 	}
 
 	update() {
-		this.controls.update();
+		//this.controls.update();
 	}
 }

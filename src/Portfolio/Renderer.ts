@@ -41,7 +41,7 @@ export default class Renderer {
 	}
 
 	clearBackground() {
-		this.instance.setClearColor(0x000000, 0); // the default
+		this.instance.setClearColor(0x000000, 1); // the default
 	}
 	resize() {
 		this.instance.setSize(this.sizes.width, this.sizes.height);

@@ -1,6 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -16,15 +16,21 @@ module.exports = {
 	},
 	devtool: 'inline-source-map',
 	plugins: [
-		
 		new CopyWebpackPlugin({
 			patterns: [{ from: path.resolve(__dirname, '../public') }],
 		}),
+
 		new HtmlWebpackPlugin({
+			title: 'Contact App',
 			template: path.resolve(__dirname, '../src/index.html'),
 			minify: true,
 		}),
-		new MiniCSSExtractPlugin(),
+		new MiniCssExtractPlugin({
+			// Options similar to the same options in webpackOptions.output
+			// both options are optional
+			filename: '[name].css',
+			chunkFilename: '[id].css',
+		}),
 	],
 	resolve: {
 		modules: [path.resolve(__dirname, '../src'), 'node_modules'],
@@ -37,38 +43,12 @@ module.exports = {
 				test: /\.(html)$/,
 				use: ['html-loader'],
 			},
+			//SCSS
+			// CSS
 			{
-				test: /\.module\.s(a|c)ss$/,
-				use: [
-					isDevelopment ? 'style-loader' : MiniCSSExtractPlugin.loader,
-					{
-						loader: 'css-loader',
-						options: {
-							modules: true,
-							sourceMap: isDevelopment,
-						},
-					},
-					{
-						loader: 'sass-loader',
-						options: {
-							sourceMap: isDevelopment,
-						},
-					},
-				],
-			},
-			{
-				test: /\.s(a|c)ss$/,
-				exclude: /\.module.(s(a|c)ss)$/,
-				use: [
-					isDevelopment ? 'style-loader' : MiniCSSExtractPlugin.loader,
-					'css-loader',
-					{
-						loader: 'sass-loader',
-						options: {
-							sourceMap: isDevelopment,
-						},
-					},
-				],
+				test: /\.(sa|sc|c)ss$/,
+				use: ['style-loader','css-loader','sass-loader'],
+				sideEffects: true,
 			},
 			//TS
 			{

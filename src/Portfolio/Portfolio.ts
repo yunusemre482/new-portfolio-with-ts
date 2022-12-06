@@ -3,7 +3,11 @@ import Camera from './Camera';
 import Renderer from './Renderer';
 import Sizes from './utils/Sizes';
 import Time from './utils/Time';
-import Loader from './utils/ModelLoader';
+
+//MODEL IMPORTS
+import Cyclist from './models/Cyclist';
+import House from './models/House';
+import SkyBox from './world/SkyBox';
 type _canvas = HTMLCanvasElement;
 type _instance = Portfolio | undefined | null;
 
@@ -21,7 +25,10 @@ export default class Portfolio {
 	sizes: Sizes;
 	renderer: Renderer;
 	time: Time;
-	loader: Loader;
+
+	house: House;
+	cyclist: Cyclist;
+	skybox: SkyBox;
 
 	constructor(_canvas?: _canvas) {
 		if (instance) {
@@ -35,23 +42,26 @@ export default class Portfolio {
 		this.sizes = new Sizes();
 
 		this.scene = new THREE.Scene();
-		this.loader = new Loader();
+
 		this.camera = new Camera();
 		this.renderer = new Renderer();
 		this.time = new Time();
+		// this.house = new House('https://prod.spline.design/dK1SOYcfc06MES9N/scene.splinecode');
+		this.cyclist = new Cyclist();
+		this.skybox = new SkyBox();
+
 		this.sizes.on('resize', () => {
-			this.camera.resize();
+			this.resize();
 		});
 
 		// Time tick event
 		this.time.on('tick', () => {
 			this.update();
 		});
-
-		this.loader.load('https://prod.spline.design/dK1SOYcfc06MES9N/scene.splinecode');
 	}
 
 	resize() {
+		console.log('resizing...');
 		this.camera.resize();
 		this.renderer.resize();
 	}
@@ -60,5 +70,8 @@ export default class Portfolio {
 		this.camera.update();
 		this.renderer.update();
 	}
-	destroy() {}
+	destroy() {
+		this.sizes.off('resize');
+		this.time.off('tick');
+	}
 }

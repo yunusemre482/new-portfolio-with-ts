@@ -22,7 +22,7 @@ export default class EventEmitter {
 	}
 
 	/** remove a listener from an event */
-	off(event: string, listener: Listener) {
+	off(event: string) {
 		if (event === '') {
 			console.warn('wrong names');
 			return false;
